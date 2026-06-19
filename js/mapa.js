@@ -36,12 +36,13 @@
     const fitKeys = C.projection && C.projection.fitFeatures
       ? new Set(C.projection.fitFeatures)
       : null;
+    // Without fitFeatures, use only polygon features for zoom (island dots don't skew the bbox).
     const fitFeats = fitKeys
       ? feats.filter(f => fitKeys.has(resolve(f.properties.name)))
-      : [...feats, ...syntheticPts];
+      : feats;
     const fitSrc = fitFeats.length > 0 ? fitFeats : feats;
 
-    const extent = (C.projection && C.projection.extent) || [[40, 40], [960, 660]];
+    const extent = (C.projection && C.projection.extent) || [[20, 20], [980, 680]];
     if (fitSrc.length > 0) {
       proj.fitExtent(extent, {type:"FeatureCollection", features:fitSrc});
     } else {

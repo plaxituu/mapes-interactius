@@ -19,7 +19,11 @@ window.CONTINENT = {
       cap:     "Capital"
     }
   },
-  projection: {},
+  projection: {
+    // Marge dret extra (880px en lloc de 980px) perquè Seychelles i Maurici
+    // apareguin al costat dret sense estirar el zoom del continent
+    extent: [[20, 20], [880, 680]]
+  },
   // clau : [ nom CA, nom ES, capital CA, capital ES, ISO2 ]
   data: {
     "Algeria":                  ["Algèria",                    "Argelia",                      "Alger",          "Argel",          "dz"],
