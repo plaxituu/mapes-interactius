@@ -19,7 +19,11 @@ window.CONTINENT = {
       cap:     "Capital"
     }
   },
-  projection: { rotate: [-155, 0] },
+  projection: {
+    rotate: [-155, 0],
+    // Només aquestes tres per calcular el zoom (Fiji creua l'antimeridià i deforma el càlcul)
+    fitFeatures: ["Australia", "New Zealand", "Papua New Guinea"]
+  },
   // clau : [ nom CA, nom ES, capital CA, capital ES, ISO2 ]
   data: {
     "Australia":        ["Austràlia",          "Australia",          "Canberra",       "Canberra",       "au"],

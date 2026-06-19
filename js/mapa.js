@@ -27,18 +27,22 @@
       return k && !pointKeys.has(k);
     });
 
-    // Build projection; include point coords in bounds so they're not clipped
+    // Build projection
     const proj = d3.geoMercator();
     if (C.projection && C.projection.rotate) proj.rotate(C.projection.rotate);
 
-    const syntheticPts = (C.points||[]).map(pt => ({
-      type: "Feature",
-      geometry: { type: "Point", coordinates: pt.coords },
-      properties: {}
-    }));
-    const allForFit = [...feats, ...syntheticPts];
-    if (allForFit.length > 0) {
-      proj.fitExtent([[30,30],[970,670]], {type:"FeatureCollection", features:allForFit});
+    // Use fitFeatures if specified (avoids antimeridian distortion from features like Fiji).
+    // Extra top padding (120px) leaves room for northern Pacific island dots.
+    const fitKeys = C.projection && C.projection.fitFeatures
+      ? new Set(C.projection.fitFeatures)
+      : null;
+    const fitFeats = fitKeys
+      ? feats.filter(f => fitKeys.has(resolve(f.properties.name)))
+      : feats;
+    const fitSrc = fitFeats.length > 0 ? fitFeats : feats;
+
+    if (fitSrc.length > 0) {
+      proj.fitExtent([[40,120],[960,640]], {type:"FeatureCollection", features:fitSrc});
     } else {
       proj.scale(150).translate([500,350]);
     }
