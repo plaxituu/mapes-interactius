@@ -42,11 +42,17 @@
       : feats;
     const fitSrc = fitFeats.length > 0 ? fitFeats : feats;
 
-    const extent = (C.projection && C.projection.extent) || [[20, 20], [980, 680]];
-    if (fitSrc.length > 0) {
-      proj.fitExtent(extent, {type:"FeatureCollection", features:fitSrc});
+    if (C.projection && C.projection.scale) {
+      // Projecció manual: escala i centre fixos (per a continents amb distorsió polar, com Amèrica del Nord)
+      proj.scale(C.projection.scale).translate([500, 350]);
+      if (C.projection.center) proj.center(C.projection.center);
     } else {
-      proj.scale(150).translate([500,350]);
+      const extent = (C.projection && C.projection.extent) || [[20, 20], [980, 680]];
+      if (fitSrc.length > 0) {
+        proj.fitExtent(extent, {type:"FeatureCollection", features:fitSrc});
+      } else {
+        proj.scale(150).translate([500,350]);
+      }
     }
 
     path = d3.geoPath(proj);

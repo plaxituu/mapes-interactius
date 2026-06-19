@@ -19,7 +19,10 @@ window.CONTINENT = {
       cap:     "Capital"
     }
   },
-  projection: {},
+  projection: {
+    // Marge dret reduït per compensar que el "mugró" est de Brasil desplaça el centre cap a la dreta
+    extent: [[20, 20], [930, 680]]
+  },
   // clau : [ nom CA, nom ES, capital CA, capital ES, ISO2 ]
   data: {
     "Argentina":  ["Argentina",  "Argentina",  "Buenos Aires", "Buenos Aires", "ar"],
