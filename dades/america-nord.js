@@ -21,8 +21,8 @@ window.CONTINENT = {
   },
   projection: {
     rotate: [90, 0],
-    scale:  200,
-    center: [0, 50]
+    scale:  170,
+    center: [0, 47]
   },
   // clau : [ nom CA, nom ES, capital CA, capital ES, ISO2 ]
   data: {
