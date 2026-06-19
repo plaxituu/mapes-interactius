@@ -2,51 +2,44 @@ window.CONTINENT = {
   i18n: {
     ca: {
       title:   "Mapa interactiu d'Amèrica del Nord",
-      sub:     "Passa el ratolí per sobre de cada país per veure'n el nom, la capital i la bandera.",
+      sub:     "Passa el ratolí per sobre de cada país o territori per veure'n el nom, la capital i la bandera.",
       reset:   "Veure tot",
       loading: "Carregant el mapa…",
-      foot:    "Mapa per a estudi · països, capitals i banderes d'Amèrica del Nord",
+      foot:    "Mapa per a estudi · països i territoris d'Amèrica del Nord",
       search:  "Cerca un país…",
       cap:     "Capital"
     },
     es: {
       title:   "Mapa interactivo de América del Norte",
-      sub:     "Pasa el ratón por encima de cada país para ver su nombre, capital y bandera.",
+      sub:     "Pasa el ratón por encima de cada país o territorio para ver su nombre, capital y bandera.",
       reset:   "Ver todo",
       loading: "Cargando el mapa…",
-      foot:    "Mapa de estudio · países, capitales y banderas de América del Norte",
+      foot:    "Mapa de estudio · países y territorios de América del Norte",
       search:  "Busca un país…",
       cap:     "Capital"
     }
   },
   projection: {
-    rotate: [95, 0],
-    // Escala i centre manuals: el Mercator deforma molt Canada/Alaska al nord,
-    // per això no usem fitExtent. Centrem a 30°N per mostrar bé Mèxic i Amèrica Central.
-    scale:  420,
-    center: [0, 30]
+    rotate: [80, 0],
+    scale:  300,
+    center: [0, 52]
   },
   // clau : [ nom CA, nom ES, capital CA, capital ES, ISO2 ]
   data: {
-    "Canada":       ["el Canadà",       "Canadá",          "Ottawa",                "Ottawa",                "ca"],
-    "United States":["Estats Units",    "Estados Unidos",  "Washington D.C.",       "Washington D.C.",       "us"],
-    "Mexico":       ["Mèxic",           "México",          "Ciutat de Mèxic",       "Ciudad de México",      "mx"],
-    "Guatemala":    ["Guatemala",       "Guatemala",       "Ciutat de Guatemala",   "Ciudad de Guatemala",   "gt"],
-    "Belize":       ["Belize",          "Belice",          "Belmopan",              "Belmopán",              "bz"],
-    "Honduras":     ["Hondures",        "Honduras",        "Tegucigalpa",           "Tegucigalpa",           "hn"],
-    "El Salvador":  ["El Salvador",     "El Salvador",     "San Salvador",          "San Salvador",          "sv"],
-    "Nicaragua":    ["Nicaragua",       "Nicaragua",       "Managua",               "Managua",               "ni"],
-    "Costa Rica":   ["Costa Rica",      "Costa Rica",      "San José",              "San José",              "cr"],
-    "Panama":       ["Panamà",          "Panamá",          "Panamà",                "Panamá",                "pa"]
+    "Canada":        ["el Canadà",                          "Canadá",                          "Ottawa",        "Ottawa",        "ca"],
+    "United States": ["Estats Units",                       "Estados Unidos",                  "Washington D.C.", "Washington D.C.", "us"],
+    "Mexico":        ["Mèxic",                              "México",                          "Ciutat de Mèxic", "Ciudad de México", "mx"],
+    "Greenland":     ["Groenlàndia (Dinamarca)",            "Groenlandia (Dinamarca)",         "Nuuk",          "Nuuk",          "gl"],
+    "Bermuda":       ["Bermudes (Regne Unit)",              "Bermudas (Reino Unido)",          "Hamilton",      "Hamilton",      "bm"],
+    "Saint Pierre":  ["Saint-Pierre i Miquelon (França)",  "San Pedro y Miquelón (Francia)",  "Saint-Pierre",  "Saint-Pierre",  "pm"]
   },
   alias: {
-    "United States of America": "United States",
-    // Territoris no sobirans → ignorar
-    "Greenland":        null,
-    "Puerto Rico":      null,
-    "Cuba":             null,
-    "Jamaica":          null,
-    "Haiti":            null,
-    "Dominican Rep.":   null
-  }
+    "United States of America": "United States"
+  },
+  // Territoris mostrats com a punts (massa petits per al polígon o distorsió Mercator excessiva)
+  points: [
+    { key: "Greenland",    coords: [-42.0,  71.7] },
+    { key: "Bermuda",      coords: [-64.8,  32.3] },
+    { key: "Saint Pierre", coords: [-56.3,  46.8] }
+  ]
 };
