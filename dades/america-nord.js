@@ -21,7 +21,7 @@ window.CONTINENT = {
   },
   projection: {
     rotate: [90, 0],
-    scale:  170,
+    scale:  200,
     center: [0, 47]
   },
   // clau : [ nom CA, nom ES, capital CA, capital ES, ISO2 ]
@@ -31,7 +31,7 @@ window.CONTINENT = {
     "Mexico":        ["Mèxic",                              "México",                          "Ciutat de Mèxic", "Ciudad de México", "mx"],
     "Greenland":     ["Groenlàndia (Dinamarca)",            "Groenlandia (Dinamarca)",         "Nuuk",          "Nuuk",          "gl"],
     "Bermuda":       ["Bermudes (Regne Unit)",              "Bermudas (Reino Unido)",          "Hamilton",      "Hamilton",      "bm"],
-    "Saint Pierre":  ["Saint-Pierre i Miquelon (França)",  "San Pedro y Miquelón (Francia)",  "Saint-Pierre",  "Saint-Pierre",  "pm"]
+    "Saint Pierre":  ["Saint-Pierre i Miquelon (França)",  "San Pedro y Miquelón (Francia)",  "Saint-Pierre",  "Saint-Pierre",  "pm", "../img/flags/pm.svg"]
   },
   alias: {
     "United States of America": "United States"

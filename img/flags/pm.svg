@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+  <!-- Navy blue field -->
+  <rect width="900" height="600" fill="#003087"/>
+
+  <defs>
+    <clipPath id="cL"><polygon points="225,55 450,55 450,510 225,375"/></clipPath>
+    <clipPath id="cTR"><polygon points="450,55 675,55 675,215 450,215"/></clipPath>
+    <clipPath id="cBR"><polygon points="450,215 675,215 675,375 450,510"/></clipPath>
+  </defs>
+
+  <!-- LEFT HALF (Basque): red field + white plain cross -->
+  <polygon points="225,55 450,55 450,510 225,375" fill="#CF142B"/>
+  <rect x="225" y="208" width="225" height="58" fill="#FFFFFF" clip-path="url(#cL)"/>
+  <rect x="308" y="55"  width="58"  height="455" fill="#FFFFFF" clip-path="url(#cL)"/>
+
+  <!-- TOP RIGHT (Brittany / ermine): white field + black ermine spots -->
+  <polygon points="450,55 675,55 675,215 450,215" fill="#FFFFFF"/>
+  <g fill="#1C1C1C">
+    <!-- Row 1: three spots -->
+    <circle cx="492" cy="88" r="9"/><path d="M480,101 L492,117 L504,101 Z"/>
+    <circle cx="562" cy="88" r="9"/><path d="M550,101 L562,117 L574,101 Z"/>
+    <circle cx="632" cy="88" r="9"/><path d="M620,101 L632,117 L644,101 Z"/>
+    <!-- Row 2: two spots (staggered) -->
+    <circle cx="527" cy="150" r="9"/><path d="M515,163 L527,179 L539,163 Z"/>
+    <circle cx="597" cy="150" r="9"/><path d="M585,163 L597,179 L609,163 Z"/>
+  </g>
+
+  <!-- BOTTOM RIGHT (Normandy): red field + gold lion passant (simplified heraldic) -->
+  <polygon points="450,215 675,215 675,375 450,510" fill="#CF142B"/>
+  <g transform="translate(562,360)">
+    <!-- Lion body -->
+    <ellipse cx="0" cy="18" rx="42" ry="33" fill="#FFD700"/>
+    <!-- Mane (gold ring, slightly darker) -->
+    <circle cx="-8" cy="-22" r="31" fill="#DFA900"/>
+    <!-- Head -->
+    <circle cx="-8" cy="-22" r="24" fill="#FFD700"/>
+    <!-- Eyes -->
+    <ellipse cx="-16" cy="-28" rx="4" ry="3" fill="#7B0000"/>
+    <ellipse cx="-2"  cy="-28" rx="4" ry="3" fill="#7B0000"/>
+    <!-- Raised front paw -->
+    <ellipse cx="-50" cy="-2" rx="17" ry="11" fill="#FFD700"/>
+    <!-- Hind legs -->
+    <rect x="-14" y="44" width="16" height="33" rx="7" fill="#FFD700"/>
+    <rect x="18"  y="44" width="16" height="33" rx="7" fill="#FFD700"/>
+    <!-- Tail -->
+    <path d="M44,8 Q70,20 65,-10 Q60,-30 74,-24" stroke="#FFD700" stroke-width="9" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- SHIELD: gold border + internal dividers (drawn last so they sit on top) -->
+  <polygon points="225,55 675,55 675,375 450,510 225,375" fill="none" stroke="#FFD700" stroke-width="8"/>
+  <line x1="450" y1="55"  x2="450" y2="510" stroke="#FFD700" stroke-width="4"/>
+  <line x1="450" y1="215" x2="675" y2="215" stroke="#FFD700" stroke-width="4"/>
+
+  <!-- GOLDEN GALLEON (centred, below shield) -->
+  <g fill="#FFD700" transform="translate(450,568)">
+    <!-- Hull -->
+    <path d="M-88,8 C-72,42 -28,52 0,54 C28,52 72,42 88,8 C62,-12 0,-22 0,-22 C0,-22 -62,-12 -88,8 Z"/>
+    <!-- Stern castle (right) -->
+    <rect x="48" y="-22" width="28" height="30" rx="4"/>
+    <rect x="62" y="-34" width="14" height="14" rx="2"/>
+    <!-- Bow decoration (left) -->
+    <path d="M-88,8 Q-104,-4 -94,-18 L-75,-14 Q-82,-4 -74,8 Z"/>
+    <!-- Main mast -->
+    <rect x="-4" y="-120" width="8" height="100"/>
+    <!-- Main yard (spar) -->
+    <rect x="-58" y="-100" width="116" height="7"/>
+    <!-- Main sail (semi-transparent) -->
+    <path d="M-52,-93 L52,-93 L40,-22 L-40,-22 Z" fill="#FFD700" opacity="0.48"/>
+    <!-- Fore mast / bowsprit -->
+    <line x1="-80" y1="-19" x2="-126" y2="-74" stroke="#FFD700" stroke-width="7"/>
+    <!-- Top mast -->
+    <rect x="-4" y="-138" width="6" height="20"/>
+    <!-- Pennant -->
+    <polygon points="2,-138 24,-130 2,-122" fill="#CF142B"/>
+    <!-- Wave lines -->
+    <path d="M-96,24 Q-74,14 -52,24 Q-30,34 -8,24 Q14,14 36,24 Q58,34 80,24 Q90,18 96,24"
+          stroke="#002070" stroke-width="4" fill="none"/>
+  </g>
+</svg>

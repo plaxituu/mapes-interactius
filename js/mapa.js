@@ -8,6 +8,11 @@
   function nameOf(k){ return LANG==="ca" ? DATA[k][0] : DATA[k][1]; }
   function capOf(k){  return LANG==="ca" ? DATA[k][2] : DATA[k][3]; }
   function resolve(n){ return DATA[n] ? n : (ALIAS[n] || null); }
+  function getFlagUrl(k){
+    return (DATA[k].length > 5 && DATA[k][5])
+      ? DATA[k][5]
+      : "https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/flags/4x3/"+DATA[k][4]+".svg";
+  }
 
   const NS = "http://www.w3.org/2000/svg";
   const XL = "http://www.w3.org/1999/xlink";
@@ -141,7 +146,7 @@
   function showCardAt(k, cx, cy) {
     tName.textContent = nameOf(k);
     tCap.textContent  = I18N[LANG].cap+": "+capOf(k);
-    const flagUrl = "https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/flags/4x3/"+DATA[k][4]+".svg";
+    const flagUrl = getFlagUrl(k);
     fimg.setAttribute("href", flagUrl);
     fimg.setAttributeNS(XL,"href", flagUrl);
     let x = cx+10, y = cy-CH-10;
@@ -225,7 +230,7 @@
   function openModal(k){
     mName.textContent = nameOf(k);
     mCap.textContent  = I18N[LANG].cap+": "+capOf(k);
-    mFlag.src         = "https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/flags/4x3/"+DATA[k][4]+".svg";
+    mFlag.src         = getFlagUrl(k);
     mFlag.alt         = nameOf(k);
     mHint.textContent = LANG==="ca" ? "Clica fora o prem Esc per tancar" : "Haz clic fuera o pulsa Esc para cerrar";
     overlay.classList.add("open");
