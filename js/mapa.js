@@ -14,12 +14,35 @@
   const svg = d3.select("#map");
   const loadmsg = document.getElementById("loadmsg");
   let card, tName, tCap, fimg, path, feats, gPaths;
+  const pointEls = {}; // key -> { sel, x, y }
   const CW=240, CH=122, PAD=12;
 
   d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json").then(topo => {
     const all = topojson.feature(topo, topo.objects.countries).features;
-    feats = all.filter(f => resolve(f.properties.name));
-    const proj = d3.geoMercator().fitSize([1000,700], {type:"FeatureCollection",features:feats});
+
+    // Countries shown as points must still be in DATA but excluded from polygon rendering
+    const pointKeys = new Set((C.points||[]).map(p => p.key));
+    feats = all.filter(f => {
+      const k = resolve(f.properties.name);
+      return k && !pointKeys.has(k);
+    });
+
+    // Build projection; include point coords in bounds so they're not clipped
+    const proj = d3.geoMercator();
+    if (C.projection && C.projection.rotate) proj.rotate(C.projection.rotate);
+
+    const syntheticPts = (C.points||[]).map(pt => ({
+      type: "Feature",
+      geometry: { type: "Point", coordinates: pt.coords },
+      properties: {}
+    }));
+    const allForFit = [...feats, ...syntheticPts];
+    if (allForFit.length > 0) {
+      proj.fitExtent([[30,30],[970,670]], {type:"FeatureCollection", features:allForFit});
+    } else {
+      proj.scale(150).translate([500,350]);
+    }
+
     path = d3.geoPath(proj);
     loadmsg.style.display = "none";
 
@@ -56,6 +79,30 @@
       .on("mouseleave",function(){ d3.select(this).attr("fill","#FCD9A8"); card.style("display","none"); })
       .on("click",function(e,f){ openModal(f._key); });
 
+    // Render small-island-nation dots
+    if (C.points && C.points.length > 0) {
+      const gPoints = svg.append("g");
+      C.points.forEach(pt => {
+        const projected = proj(pt.coords);
+        if (!projected) return;
+        const [px, py] = projected;
+        const circle = gPoints.append("circle")
+          .attr("cx", px).attr("cy", py).attr("r", 7)
+          .attr("fill","#FCD9A8").attr("stroke","#E8830C").attr("stroke-width",1.5)
+          .style("cursor","pointer")
+          .on("mouseenter", function(){
+            d3.select(this).attr("fill","#E8830C");
+            showCardAt(pt.key, px, py);
+          })
+          .on("mouseleave", function(){
+            d3.select(this).attr("fill","#FCD9A8");
+            card.style("display","none");
+          })
+          .on("click", function(){ openModal(pt.key); });
+        pointEls[pt.key] = { sel: circle, x: px, y: py };
+      });
+    }
+
     applyLang();
   }).catch(() => {
     loadmsg.textContent = LANG==="ca"
@@ -63,19 +110,22 @@
       : "No se ha podido cargar el mapa. Comprueba la conexión e inténtalo de nuevo.";
   });
 
-  function showCard(f){
-    const k = f._key;
+  function showCardAt(k, cx, cy) {
     tName.textContent = nameOf(k);
     tCap.textContent  = I18N[LANG].cap+": "+capOf(k);
     fimg.setAttributeNS(XL,"href","https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/"+DATA[k][4]+".svg");
-    const c = path.centroid(f);
-    let x = c[0]+10, y = c[1]-CH-10;
+    let x = cx+10, y = cy-CH-10;
     if(x+CW>1000) x=1000-CW-4;
     if(x<4) x=4;
-    if(y<4) y=c[1]+14;
+    if(y<4) y=cy+14;
     if(y+CH>700) y=700-CH-4;
     card.attr("transform","translate("+x+","+y+")").style("display",null);
     card.raise();
+  }
+
+  function showCard(f){
+    const c = path.centroid(f);
+    showCardAt(f._key, c[0], c[1]);
   }
 
   function applyLang(){
@@ -87,15 +137,32 @@
     document.documentElement.lang = LANG;
   }
 
+  function resetColors(){
+    if(gPaths) gPaths.selectAll("path").attr("fill","#FCD9A8");
+    Object.values(pointEls).forEach(({sel}) => sel.attr("fill","#FCD9A8"));
+  }
+
   document.getElementById("search").addEventListener("input",function(){
     const q = this.value.trim().toLowerCase();
     if(!gPaths) return;
-    gPaths.selectAll("path").attr("fill", f =>
-      (q.length>1 && nameOf(f._key).toLowerCase().includes(q)) ? "#E8830C" : "#FCD9A8"
-    );
-    if(q.length>1){
-      const m = feats.find(f => nameOf(f._key).toLowerCase().includes(q));
-      if(m) showCard(m); else card.style("display","none");
+    resetColors();
+    if(q.length > 1){
+      gPaths.selectAll("path").attr("fill", f =>
+        nameOf(f._key).toLowerCase().includes(q) ? "#E8830C" : "#FCD9A8"
+      );
+      Object.entries(pointEls).forEach(([k,{sel}]) => {
+        if(nameOf(k).toLowerCase().includes(q)) sel.attr("fill","#E8830C");
+      });
+      const mFeat = feats.find(f => nameOf(f._key).toLowerCase().includes(q));
+      const mPt   = Object.entries(pointEls).find(([k]) => nameOf(k).toLowerCase().includes(q));
+      if(mFeat){
+        showCard(mFeat);
+      } else if(mPt) {
+        const [k, {x, y}] = mPt;
+        showCardAt(k, x, y);
+      } else {
+        card.style("display","none");
+      }
     } else {
       card.style("display","none");
     }
@@ -103,7 +170,7 @@
 
   document.getElementById("reset-btn").addEventListener("click",function(){
     document.getElementById("search").value = "";
-    if(gPaths) gPaths.selectAll("path").attr("fill","#FCD9A8");
+    resetColors();
     if(card) card.style("display","none");
   });
 
@@ -114,7 +181,7 @@
     applyLang();
     if(card) card.style("display","none");
     document.getElementById("search").value = "";
-    if(gPaths) gPaths.selectAll("path").attr("fill","#FCD9A8");
+    resetColors();
   }
   document.getElementById("lang-ca").addEventListener("click",()=>setLang("ca"));
   document.getElementById("lang-es").addEventListener("click",()=>setLang("es"));
