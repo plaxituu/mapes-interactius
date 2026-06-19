@@ -1,14 +1,17 @@
 (function () {
   'use strict';
 
-  const FLAG_CDN = 'https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/flags/4x3/';
+  const FLAG_CDN      = 'https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/flags/4x3/';
+  const ALL_CONTINENTS = ['europa','asia','africa','america-nord','america-central','america-sud','oceania'];
+  const GLOBAL_LIMIT   = 15;
 
   // ── State ────────────────────────────────────────────────
   let LANG              = 'ca';
   let selectedContinent = null;
   let selectedType      = 'capital';
-  let selectedDiff      = 'easy';   // 'easy' | 'hard'
+  let selectedDiff      = 'easy';
   let loadedContinent   = null;
+  let allCountriesCache = null;   // cache for global mode
   let countries         = [];
   let questions         = [];
   let currentIdx        = 0;
@@ -19,34 +22,36 @@
   // ── Translations ─────────────────────────────────────────
   const T = {
     ca: {
-      title:    'Quiz de Geografia',
-      sub:      'Posa a prova els teus coneixements sobre països, capitals i banderes.',
-      lbl_cont: 'Tria el continent',
-      lbl_type: 'Tipus de pregunta',
-      lbl_diff: 'Dificultat',
-      start:    'Comença!',
-      loading:  'Carregant…',
-      back:     '← Inici',
-      t_cap:    '🏛️ Capitals',
-      t_flag:   '🚩 Banderes',
-      t_mix:    '🎲 Mescla',
-      d_easy:   '🟢 Fàcil — 4 opcions',
-      d_hard:   '🔴 Difícil — Escriu la resposta',
-      q_cap:    'Quina és la capital de…',
-      q_flag:   'De quin país és aquesta bandera?',
-      next:     'Següent →',
-      finish:   'Veure resultats',
-      counter:  (i, n) => `${i} / ${n}`,
-      correct:  n => `${n} correcte${n !== 1 ? 's' : ''}`,
-      hard_ph:  'Escriu la resposta…',
-      hard_chk: 'Comprova',
-      hard_ok:  '✅ Correcte!',
-      hard_ko:  ans => `❌ Incorrecte · Resposta: ${ans}`,
-      res_tit:  'Resultat final',
-      replay:   'Torna a jugar',
-      change:   'Canvia continent',
-      err_tit:  'Respostes incorrectes:',
-      no_err:   '✅ Cap error! Perfecte!',
+      title:      'Quiz de Geografia',
+      sub:        'Posa a prova els teus coneixements sobre països, capitals i banderes.',
+      lbl_cont:   'Tria el continent',
+      lbl_type:   'Tipus de pregunta',
+      lbl_diff:   'Dificultat',
+      start:      'Comença!',
+      loading:    'Carregant…',
+      back:       '← Inici',
+      t_cap:      '🏛️ Capitals',
+      t_flag:     '🚩 Banderes',
+      t_mix:      '🎲 Mescla',
+      d_easy:     '🟢 Fàcil — 4 opcions',
+      d_hard:     '🔴 Difícil — Escriu la resposta',
+      global_lbl: 'Tot el món',
+      global_sub: `${GLOBAL_LIMIT} preguntes aleatòries de tots els continents`,
+      q_cap:      'Quina és la capital de…',
+      q_flag:     'De quin país és aquesta bandera?',
+      next:       'Següent →',
+      finish:     'Veure resultats',
+      counter:    (i, n) => `${i} / ${n}`,
+      correct:    n => `${n} correcte${n !== 1 ? 's' : ''}`,
+      hard_ph:    'Escriu la resposta…',
+      hard_chk:   'Comprova',
+      hard_ok:    '✅ Correcte!',
+      hard_ko:    ans => `❌ Incorrecte · Resposta: ${ans}`,
+      res_tit:    'Resultat final',
+      replay:     'Torna a jugar',
+      change:     'Canvia continent',
+      err_tit:    'Respostes incorrectes:',
+      no_err:     '✅ Cap error! Perfecte!',
       pct: p => {
         if (p === 100) return '100% · 🏆 Perfecte!';
         if (p >= 90)  return `${p}% · 🎉 Excel·lent!`;
@@ -56,34 +61,36 @@
       }
     },
     es: {
-      title:    'Quiz de Geografía',
-      sub:      'Pon a prueba tus conocimientos sobre países, capitales y banderas.',
-      lbl_cont: 'Elige el continente',
-      lbl_type: 'Tipo de pregunta',
-      lbl_diff: 'Dificultad',
-      start:    '¡Empezar!',
-      loading:  'Cargando…',
-      back:     '← Inicio',
-      t_cap:    '🏛️ Capitales',
-      t_flag:   '🚩 Banderas',
-      t_mix:    '🎲 Mezcla',
-      d_easy:   '🟢 Fácil — 4 opciones',
-      d_hard:   '🔴 Difícil — Escribe la respuesta',
-      q_cap:    '¿Cuál es la capital de…',
-      q_flag:   '¿De qué país es esta bandera?',
-      next:     'Siguiente →',
-      finish:   'Ver resultados',
-      counter:  (i, n) => `${i} / ${n}`,
-      correct:  n => `${n} correcta${n !== 1 ? 's' : ''}`,
-      hard_ph:  'Escribe la respuesta…',
-      hard_chk: 'Comprobar',
-      hard_ok:  '✅ ¡Correcto!',
-      hard_ko:  ans => `❌ Incorrecto · Respuesta: ${ans}`,
-      res_tit:  'Resultado final',
-      replay:   'Volver a jugar',
-      change:   'Cambiar continente',
-      err_tit:  'Respuestas incorrectas:',
-      no_err:   '✅ ¡Sin errores! ¡Perfecto!',
+      title:      'Quiz de Geografía',
+      sub:        'Pon a prueba tus conocimientos sobre países, capitales y banderas.',
+      lbl_cont:   'Elige el continente',
+      lbl_type:   'Tipo de pregunta',
+      lbl_diff:   'Dificultad',
+      start:      '¡Empezar!',
+      loading:    'Cargando…',
+      back:       '← Inicio',
+      t_cap:      '🏛️ Capitales',
+      t_flag:     '🚩 Banderas',
+      t_mix:      '🎲 Mezcla',
+      d_easy:     '🟢 Fácil — 4 opciones',
+      d_hard:     '🔴 Difícil — Escribe la respuesta',
+      global_lbl: 'Todo el mundo',
+      global_sub: `${GLOBAL_LIMIT} preguntas aleatorias de todos los continentes`,
+      q_cap:      '¿Cuál es la capital de…',
+      q_flag:     '¿De qué país es esta bandera?',
+      next:       'Siguiente →',
+      finish:     'Ver resultados',
+      counter:    (i, n) => `${i} / ${n}`,
+      correct:    n => `${n} correcta${n !== 1 ? 's' : ''}`,
+      hard_ph:    'Escribe la respuesta…',
+      hard_chk:   'Comprobar',
+      hard_ok:    '✅ ¡Correcto!',
+      hard_ko:    ans => `❌ Incorrecto · Respuesta: ${ans}`,
+      res_tit:    'Resultado final',
+      replay:     'Volver a jugar',
+      change:     'Cambiar continente',
+      err_tit:    'Respuestas incorrectas:',
+      no_err:     '✅ ¡Sin errores! ¡Perfecto!',
       pct: p => {
         if (p === 100) return '100% · 🏆 ¡Perfecto!';
         if (p >= 90)  return `${p}% · 🎉 ¡Excelente!`;
@@ -128,6 +135,9 @@
     $('results-title').textContent = s.res_tit;
     $('replay-btn').textContent    = s.replay;
     $('change-btn').textContent    = s.change;
+    // Global button has a two-line label managed here
+    $('cont-global').innerHTML =
+      `🌍 ${s.global_lbl}<br><small>${s.global_sub}</small>`;
   }
 
   // ── Setup: continent ──────────────────────────────────────
@@ -160,7 +170,7 @@
 
   $('start-btn').addEventListener('click', startQuiz);
 
-  // ── Load continent data ───────────────────────────────────
+  // ── Load a single continent ───────────────────────────────
   function loadContinent(name, cb) {
     if (loadedContinent === name && window.CONTINENT) { cb(); return; }
     const old = document.querySelector('script[data-quiz-c]');
@@ -173,36 +183,68 @@
     document.head.appendChild(s);
   }
 
+  // ── Load ALL continents sequentially, build combined list ─
+  function loadAllContinents(cb) {
+    if (allCountriesCache) { cb(allCountriesCache); return; }
+    const result = [];
+    let i = 0;
+
+    function next() {
+      if (i >= ALL_CONTINENTS.length) {
+        allCountriesCache = result;
+        loadedContinent = null; // window.CONTINENT is now the last file; invalidate cache
+        cb(result);
+        return;
+      }
+      const s = document.createElement('script');
+      s.src = 'dades/' + ALL_CONTINENTS[i] + '.js';
+      s.onload = () => {
+        Object.entries(window.CONTINENT.data).forEach(([key, v]) => {
+          result.push({ key, nameCa: v[0], nameEs: v[1], capitalCa: v[2], capitalEs: v[3], iso: v[4], localFlag: v[5] || null });
+        });
+        i++;
+        next();
+      };
+      s.onerror = () => { i++; next(); }; // skip missing files gracefully
+      document.head.appendChild(s);
+    }
+
+    next();
+  }
+
   // ── Start quiz ────────────────────────────────────────────
   function startQuiz() {
     const btn = $('start-btn');
     btn.textContent = t().loading;
     btn.disabled = true;
 
-    loadContinent(selectedContinent, function () {
+    function init(pool) {
+      countries = pool;
       btn.textContent = t().start;
       btn.disabled = false;
-
-      countries = Object.entries(window.CONTINENT.data).map(([key, v]) => ({
-        key,
-        nameCa:    v[0],
-        nameEs:    v[1],
-        capitalCa: v[2],
-        capitalEs: v[3],
-        iso:       v[4],
-        localFlag: v[5] || null
-      }));
-
       score = 0; errors = []; currentIdx = 0; answered = false;
       buildQuestions();
       showScreen('question');
       renderQuestion();
-    });
+    }
+
+    if (selectedContinent === 'global') {
+      loadAllContinents(init);
+    } else {
+      loadContinent(selectedContinent, function () {
+        init(Object.entries(window.CONTINENT.data).map(([key, v]) => ({
+          key, nameCa: v[0], nameEs: v[1], capitalCa: v[2], capitalEs: v[3],
+          iso: v[4], localFlag: v[5] || null
+        })));
+      });
+    }
   }
 
-  // ── Build question list ───────────────────────────────────
+  // ── Build question list (15 max for global) ───────────────
   function buildQuestions() {
-    questions = shuffle([...countries]).map(c => ({
+    const limit = selectedContinent === 'global' ? GLOBAL_LIMIT : Infinity;
+    const pool  = shuffle([...countries]).slice(0, limit);
+    questions   = pool.map(c => ({
       type: selectedType === 'mix'
         ? (Math.random() < 0.5 ? 'capital' : 'flag')
         : selectedType,
@@ -221,7 +263,6 @@
     $('q-score').textContent       = t().correct(score);
     $('q-label').textContent       = q.type === 'capital' ? t().q_cap : t().q_flag;
 
-    // Subject (country name + small flag, or big flag)
     const subj = $('q-subject');
     subj.innerHTML = '';
     if (q.type === 'capital') {
@@ -230,15 +271,12 @@
       name.textContent = nameOf(c);
       const img = document.createElement('img');
       img.className = 'q-flag-small';
-      img.src = flagUrl(c);
-      img.alt = nameOf(c);
-      subj.appendChild(name);
-      subj.appendChild(img);
+      img.src = flagUrl(c); img.alt = nameOf(c);
+      subj.appendChild(name); subj.appendChild(img);
     } else {
       const img = document.createElement('img');
       img.className = 'q-flag-big';
-      img.src = flagUrl(c);
-      img.alt = '?';
+      img.src = flagUrl(c); img.alt = '?';
       subj.appendChild(img);
     }
 
@@ -246,10 +284,8 @@
     answered = false;
 
     if (selectedDiff === 'easy') {
-      // ── Easy: 4 option buttons ────────────────────────────
       $('options-grid').classList.remove('hidden');
       $('hard-area').classList.add('hidden');
-
       const grid = $('options-grid');
       grid.innerHTML = '';
       getOptions(q).forEach(opt => {
@@ -261,14 +297,12 @@
         grid.appendChild(btn);
       });
     } else {
-      // ── Hard: text input ──────────────────────────────────
       $('options-grid').classList.add('hidden');
       $('hard-area').classList.remove('hidden');
       const inp = $('hard-input');
-      inp.value       = '';
-      inp.disabled    = false;
+      inp.value = ''; inp.disabled = false;
       inp.placeholder = t().hard_ph;
-      $('hard-submit').disabled  = false;
+      $('hard-submit').disabled = false;
       $('hard-submit').textContent = t().hard_chk;
       $('hard-feedback').className   = 'hard-feedback hidden';
       $('hard-feedback').textContent = '';
@@ -276,7 +310,7 @@
     }
   }
 
-  // ── Easy: select an option ────────────────────────────────
+  // ── Easy: pick an option ──────────────────────────────────
   function selectOption(btn, q, chosen) {
     if (answered) return;
     answered = true;
@@ -297,14 +331,13 @@
     showNextBtn();
   }
 
-  // ── Hard: check typed answer ──────────────────────────────
+  // ── Hard: validate typed answer ───────────────────────────
   function checkHardAnswer() {
     if (answered) return;
     const raw = $('hard-input').value.trim();
     if (!raw) return;
-
     answered = true;
-    $('hard-input').disabled  = true;
+    $('hard-input').disabled = true;
     $('hard-submit').disabled = true;
 
     const q  = questions[currentIdx];
@@ -318,14 +351,12 @@
       fb.className   = 'hard-feedback correct';
     } else {
       errors.push(c);
-      // Show the accepted forms (CA / ES) only if they differ
       const ca  = q.type === 'capital' ? c.capitalCa : c.nameCa;
       const es  = q.type === 'capital' ? c.capitalEs : c.nameEs;
       const ans = normalize(ca) === normalize(es) ? ca : `${ca} / ${es}`;
       fb.textContent = t().hard_ko(ans);
       fb.className   = 'hard-feedback wrong';
     }
-
     $('q-score').textContent = t().correct(score);
     showNextBtn();
   }
@@ -341,20 +372,15 @@
 
   $('next-btn').addEventListener('click', function () {
     currentIdx++;
-    if (currentIdx < questions.length) {
-      renderQuestion();
-    } else {
-      showResults();
-    }
+    if (currentIdx < questions.length) renderQuestion(); else showResults();
   });
 
   // ── Results ───────────────────────────────────────────────
   function showResults() {
     showScreen('results');
-    const total = questions.length;
-    const pct   = Math.round((score / total) * 100);
+    const pct = Math.round((score / questions.length) * 100);
     $('score-num').textContent = score;
-    $('total-num').textContent = total;
+    $('total-num').textContent = questions.length;
     $('score-msg').textContent = t().pct(pct);
 
     const errSec = $('errors-section');
@@ -364,21 +390,17 @@
 
     if (uniq.length === 0) {
       const p = document.createElement('p');
-      p.className   = 'no-errors';
-      p.textContent = t().no_err;
+      p.className = 'no-errors'; p.textContent = t().no_err;
       errSec.appendChild(p);
     } else {
       const title = document.createElement('p');
-      title.className   = 'errors-title';
-      title.textContent = t().err_tit;
+      title.className = 'errors-title'; title.textContent = t().err_tit;
       errSec.appendChild(title);
       uniq.forEach(c => {
-        const row  = document.createElement('div');
+        const row = document.createElement('div');
         row.className = 'error-row';
-        const img  = document.createElement('img');
-        img.src       = flagUrl(c);
-        img.className = 'error-flag';
-        img.alt       = nameOf(c);
+        const img = document.createElement('img');
+        img.src = flagUrl(c); img.className = 'error-flag'; img.alt = nameOf(c);
         const span = document.createElement('span');
         span.textContent = nameOf(c) + ' · ' + capitalOf(c);
         row.append(img, span);
@@ -389,46 +411,35 @@
 
   $('replay-btn').addEventListener('click', function () {
     score = 0; errors = []; currentIdx = 0; answered = false;
-    buildQuestions();
-    showScreen('question');
-    renderQuestion();
+    buildQuestions(); showScreen('question'); renderQuestion();
   });
-
   $('change-btn').addEventListener('click', () => showScreen('setup'));
 
-  // ── Normalise: lowercase, strip accents + punctuation, hyphens→space ──
-  function normalize(str) {
-    return str
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[̀-ͯ]/g, '')  // remove diacritics (é→e, ü→u, etc.)
-      .replace(/-/g, ' ')               // hyphens to spaces (Port-au-Prince → port au prince)
-      .replace(/[^a-z0-9\s]/g, '')      // drop remaining punctuation (apostrophes, dots…)
-      .replace(/\s+/g, ' ')
-      .trim();
-  }
-
-  // Accept CA or ES name, with or without accents/punctuation
-  function isAnswerCorrect(input, country, type) {
-    const ni = normalize(input);
-    if (type === 'capital') {
-      return ni === normalize(country.capitalCa) || ni === normalize(country.capitalEs);
-    }
-    return ni === normalize(country.nameCa) || ni === normalize(country.nameEs);
-  }
-
+  // ── Helpers ───────────────────────────────────────────────
   function nameOf(c)    { return LANG === 'ca' ? c.nameCa    : c.nameEs;    }
   function capitalOf(c) { return LANG === 'ca' ? c.capitalCa : c.capitalEs; }
-
-  function flagUrl(c) {
+  function flagUrl(c)   {
     if (c.localFlag) return c.localFlag.replace(/^\.\.\//, '');
     return FLAG_CDN + c.iso + '.svg';
   }
 
+  function normalize(str) {
+    return str.toLowerCase()
+      .normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/-/g, ' ').replace(/[^a-z0-9\s]/g, '')
+      .replace(/\s+/g, ' ').trim();
+  }
+
+  function isAnswerCorrect(input, country, type) {
+    const ni = normalize(input);
+    return type === 'capital'
+      ? ni === normalize(country.capitalCa) || ni === normalize(country.capitalEs)
+      : ni === normalize(country.nameCa)    || ni === normalize(country.nameEs);
+  }
+
   function getOptions(q) {
     const correct = q.country;
-    const pool    = countries.filter(c => c.key !== correct.key);
-    return shuffle([correct, ...shuffle(pool).slice(0, 3)]);
+    return shuffle([correct, ...shuffle(countries.filter(c => c.key !== correct.key)).slice(0, 3)]);
   }
 
   function shuffle(arr) {
@@ -441,12 +452,9 @@
   }
 
   function showScreen(name) {
-    $('screen-setup').classList.add('hidden');
-    $('screen-question').classList.add('hidden');
-    $('screen-results').classList.add('hidden');
+    ['setup','question','results'].forEach(s => $('screen-'+s).classList.add('hidden'));
     $('screen-' + name).classList.remove('hidden');
   }
 
-  // ── Init ─────────────────────────────────────────────────
   applyI18n();
 })();

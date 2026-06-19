@@ -69,6 +69,14 @@
 }
 .sel-btn.selected small { color: #c47000; }
 .type-btn { flex: 1; min-width: 100px; }
+/* Botó "Tot el món": ocupa tota l'amplada de la graella */
+.global-btn {
+  grid-column: 1 / -1;
+  background: #fff9f0;
+  border-color: var(--orange);
+  font-weight: 600;
+}
+.global-btn.selected { background: #fff3e0; }
 
 /* ── Primary / secondary buttons ─────────────────────────── */
 .main-btn {
