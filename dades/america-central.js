@@ -19,6 +19,8 @@ window.CONTINENT = {
       cap:     "Capital"
     }
   },
+  // Noms exactes del TopoJSON (Natural Earth) per al fons gris no interactiu
+  background: ["Mexico", "United States of America"],
   projection: {
     rotate: [76, 0],
     scale:  900,

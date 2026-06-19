@@ -58,6 +58,21 @@
     path = d3.geoPath(proj);
     loadmsg.style.display = "none";
 
+    // Capa de fons: països no interactius en gris (per a context geogràfic)
+    if (C.background && C.background.length > 0) {
+      const bgSet = new Set(C.background);
+      const bgFeats = all.filter(f => bgSet.has(f.properties.name));
+      if (bgFeats.length > 0) {
+        const gBg = svg.append("g");
+        gBg.selectAll("path").data(bgFeats).enter().append("path")
+          .attr("d", path)
+          .attr("fill", "#D0D0D0")
+          .attr("stroke", "#BBBBBB")
+          .attr("stroke-width", 0.5)
+          .style("pointer-events", "none");
+      }
+    }
+
     gPaths = svg.append("g");
 
     card = svg.append("g").style("display","none").style("pointer-events","none");
@@ -126,7 +141,9 @@
   function showCardAt(k, cx, cy) {
     tName.textContent = nameOf(k);
     tCap.textContent  = I18N[LANG].cap+": "+capOf(k);
-    fimg.setAttributeNS(XL,"href","https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/"+DATA[k][4]+".svg");
+    const flagUrl = "https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/flags/4x3/"+DATA[k][4]+".svg";
+    fimg.setAttribute("href", flagUrl);
+    fimg.setAttributeNS(XL,"href", flagUrl);
     let x = cx+10, y = cy-CH-10;
     if(x+CW>1000) x=1000-CW-4;
     if(x<4) x=4;
@@ -208,7 +225,7 @@
   function openModal(k){
     mName.textContent = nameOf(k);
     mCap.textContent  = I18N[LANG].cap+": "+capOf(k);
-    mFlag.src         = "https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/flags/4x3/"+DATA[k][4]+".svg";
+    mFlag.src         = "https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/flags/4x3/"+DATA[k][4]+".svg";
     mFlag.alt         = nameOf(k);
     mHint.textContent = LANG==="ca" ? "Clica fora o prem Esc per tancar" : "Haz clic fuera o pulsa Esc para cerrar";
     overlay.classList.add("open");
