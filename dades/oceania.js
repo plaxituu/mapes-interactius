@@ -22,7 +22,9 @@ window.CONTINENT = {
   projection: {
     rotate: [-155, 0],
     // Només aquestes tres per calcular el zoom (Fiji creua l'antimeridià i deforma el càlcul)
-    fitFeatures: ["Australia", "New Zealand", "Papua New Guinea"]
+    fitFeatures: ["Australia", "New Zealand", "Papua New Guinea"],
+    // Marge superior extra per als punts insulars del Pacífic nord (Palau, Micronèsia, etc.)
+    extent: [[40, 120], [960, 640]]
   },
   // clau : [ nom CA, nom ES, capital CA, capital ES, ISO2 ]
   data: {

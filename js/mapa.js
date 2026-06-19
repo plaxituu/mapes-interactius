@@ -31,18 +31,19 @@
     const proj = d3.geoMercator();
     if (C.projection && C.projection.rotate) proj.rotate(C.projection.rotate);
 
-    // Use fitFeatures if specified (avoids antimeridian distortion from features like Fiji).
-    // Extra top padding (120px) leaves room for northern Pacific island dots.
+    // fitFeatures: use only named polygon features to compute zoom (avoids antimeridian distortion).
+    // Without fitFeatures, use all polygon features + synthetic points so island dots stay on-screen.
     const fitKeys = C.projection && C.projection.fitFeatures
       ? new Set(C.projection.fitFeatures)
       : null;
     const fitFeats = fitKeys
       ? feats.filter(f => fitKeys.has(resolve(f.properties.name)))
-      : feats;
+      : [...feats, ...syntheticPts];
     const fitSrc = fitFeats.length > 0 ? fitFeats : feats;
 
+    const extent = (C.projection && C.projection.extent) || [[40, 40], [960, 660]];
     if (fitSrc.length > 0) {
-      proj.fitExtent([[40,120],[960,640]], {type:"FeatureCollection", features:fitSrc});
+      proj.fitExtent(extent, {type:"FeatureCollection", features:fitSrc});
     } else {
       proj.scale(150).translate([500,350]);
     }

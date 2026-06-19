@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa interactiu d'Àfrica — països, capitals i banderes</title>
+<link rel="stylesheet" href="../css/estils.css">
+</head>
+<body>
+<div class="wrap">
+  <h1 data-i18n="title">Mapa interactiu d'Àfrica</h1>
+  <p class="sub" data-i18n="sub">Passa el ratolí per sobre de cada país per veure'n el nom, la capital i la bandera.</p>
+
+  <div class="toolbar">
+    <input id="search" type="text" placeholder="Cerca un país…">
+    <button id="reset-btn" data-i18n="reset">Veure tot</button>
+    <span class="lang">
+      <button id="lang-ca" class="active">CAT</button>
+      <button id="lang-es">CAST</button>
+    </span>
+  </div>
+
+  <div class="mapbox">
+    <div id="loadmsg" data-i18n="loading">Carregant el mapa…</div>
+    <svg id="map" viewBox="0 0 1000 700" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>Mapa d'Àfrica</title>
+    </svg>
+  </div>
+
+  <p class="foot" data-i18n="foot">Mapa per a estudi · països, capitals i banderes d'Àfrica</p>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <button class="close" id="modal-close" aria-label="Tancar">×</button>
+    <h2 id="modal-name"></h2>
+    <p class="cap" id="modal-cap"></p>
+    <img id="modal-flag" alt="">
+    <p class="hint" id="modal-hint">Clica fora o prem Esc per tancar</p>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script src="../dades/africa.js"></script>
+<script src="../js/mapa.js"></script>
+</body>
+</html>
