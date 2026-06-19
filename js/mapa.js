@@ -112,7 +112,9 @@
     applyLang();
   }).catch((err) => {
     console.error("Map load error:", err);
-    loadmsg.textContent = "Error: " + (err && err.message ? err.message : String(err));
+    loadmsg.textContent = LANG==="ca"
+      ? "No s'ha pogut carregar el mapa. Comprova la connexió i torna-ho a provar."
+      : "No se ha podido cargar el mapa. Comprueba la conexión e inténtalo de nuevo.";
   });
 
   function showCardAt(k, cx, cy) {
