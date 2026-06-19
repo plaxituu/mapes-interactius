@@ -36,9 +36,9 @@ window.CONTINENT = {
   alias: {
     "United States of America": "United States"
   },
-  // Territoris mostrats com a punts (massa petits per al polígon o distorsió Mercator excessiva)
+  // Bermudes i Saint-Pierre: massa petits per al polígon → punts
+  // Groenlàndia: polígon (és gran, es renderitza bé amb escala 200)
   points: [
-    { key: "Greenland",    coords: [-42.0,  71.7] },
     { key: "Bermuda",      coords: [-64.8,  32.3] },
     { key: "Saint Pierre", coords: [-56.3,  46.8] }
   ]
