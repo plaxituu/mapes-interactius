@@ -46,6 +46,14 @@
       </div>
     </div>
 
+    <div class="setup-block">
+      <p class="setup-lbl" id="lbl-diff">Dificultat</p>
+      <div class="type-row">
+        <button class="sel-btn diff-btn selected" data-d="easy" id="diff-easy">🟢 Fàcil — 4 opcions</button>
+        <button class="sel-btn diff-btn"          data-d="hard" id="diff-hard">🔴 Difícil — Escriu la resposta</button>
+      </div>
+    </div>
+
     <button id="start-btn" class="main-btn" disabled>Comença!</button>
   </div>
 
@@ -64,6 +72,18 @@
       <p id="q-label" class="q-label"></p>
       <div id="q-subject" class="q-subject"></div>
       <div id="options-grid" class="options-grid"></div>
+
+      <!-- Mode difícil: camp de text -->
+      <div id="hard-area" class="hard-area hidden">
+        <div class="hard-input-wrap">
+          <input type="text" id="hard-input" class="hard-input"
+                 placeholder="Escriu la resposta…"
+                 autocomplete="off" autocorrect="off"
+                 autocapitalize="off" spellcheck="false">
+          <button id="hard-submit" class="hard-submit-btn">Comprova</button>
+        </div>
+        <div id="hard-feedback" class="hard-feedback hidden"></div>
+      </div>
     </div>
 
     <button id="next-btn" class="main-btn hidden">Següent →</button>
