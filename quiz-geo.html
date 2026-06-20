@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz de Geografia — Mapes interactius</title>
+<link rel="stylesheet" href="css/estils.css">
+<link rel="stylesheet" href="css/quiz.css">
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="quiz-nav">
+    <a href="quiz.html" class="back-link" id="back-link">← Jocs</a>
+    <span class="lang">
+      <button id="lang-ca" class="active">CAT</button>
+      <button id="lang-es">CAST</button>
+    </span>
+  </nav>
+
+  <!-- ══════════ PANTALLA: CONFIGURACIÓ ══════════ -->
+  <div id="screen-setup">
+    <h1 id="quiz-title">Quiz de Geografia</h1>
+    <p class="sub" id="quiz-sub">Posa a prova els teus coneixements sobre països, capitals i banderes.</p>
+
+    <div class="setup-block">
+      <p class="setup-lbl" id="lbl-continent">Tria el continent</p>
+      <div class="cont-grid">
+        <button class="sel-btn continent-btn global-btn" data-c="global" id="cont-global">🌍 Tot el món<br><small>15 preguntes aleatòries de tots els continents</small></button>
+        <button class="sel-btn continent-btn" data-c="europa">🌍 Europa<br><small>46 països</small></button>
+        <button class="sel-btn continent-btn" data-c="asia">🌏 Àsia<br><small>44 països</small></button>
+        <button class="sel-btn continent-btn" data-c="africa">🌍 Àfrica<br><small>54 països</small></button>
+        <button class="sel-btn continent-btn" data-c="america-nord">🌎 Am. del Nord<br><small>6 entrades</small></button>
+        <button class="sel-btn continent-btn" data-c="america-central">🌎 Am. Central<br><small>20 països</small></button>
+        <button class="sel-btn continent-btn" data-c="america-sud">🌎 Am. del Sud<br><small>12 països</small></button>
+        <button class="sel-btn continent-btn" data-c="oceania">🌏 Oceania<br><small>14 països</small></button>
+      </div>
+    </div>
+
+    <div class="setup-block">
+      <p class="setup-lbl" id="lbl-type">Tipus de pregunta</p>
+      <div class="type-row">
+        <button class="sel-btn type-btn selected" data-t="capital" id="type-capital">🏛️ Capitals</button>
+        <button class="sel-btn type-btn"          data-t="flag"    id="type-flag">🚩 Banderes</button>
+        <button class="sel-btn type-btn"          data-t="mix"     id="type-mix">🎲 Mescla</button>
+      </div>
+    </div>
+
+    <div class="setup-block">
+      <p class="setup-lbl" id="lbl-diff">Dificultat</p>
+      <div class="type-row">
+        <button class="sel-btn diff-btn selected" data-d="easy" id="diff-easy">🟢 Fàcil — 4 opcions</button>
+        <button class="sel-btn diff-btn"          data-d="hard" id="diff-hard">🔴 Difícil — Escriu la resposta</button>
+      </div>
+    </div>
+
+    <button id="start-btn" class="main-btn" disabled>Comença!</button>
+  </div>
+
+  <!-- ══════════ PANTALLA: PREGUNTA ══════════ -->
+  <div id="screen-question" class="hidden">
+
+    <div class="prog-wrap">
+      <div class="prog-track"><div id="progress-fill" class="prog-fill"></div></div>
+      <div class="prog-meta">
+        <span id="q-counter">1 / 20</span>
+        <span id="q-score">0 correctes</span>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <p id="q-label" class="q-label"></p>
+      <div id="q-subject" class="q-subject"></div>
+      <div id="options-grid" class="options-grid"></div>
+
+      <div id="hard-area" class="hard-area hidden">
+        <div class="hard-input-wrap">
+          <input type="text" id="hard-input" class="hard-input"
+                 placeholder="Escriu la resposta…"
+                 autocomplete="off" autocorrect="off"
+                 autocapitalize="off" spellcheck="false">
+          <button id="hard-submit" class="hard-submit-btn">Comprova</button>
+        </div>
+        <div id="hard-feedback" class="hard-feedback hidden"></div>
+      </div>
+    </div>
+
+    <button id="next-btn" class="main-btn hidden">Següent →</button>
+  </div>
+
+  <!-- ══════════ PANTALLA: RESULTATS ══════════ -->
+  <div id="screen-results" class="hidden">
+    <div class="results-card">
+      <p id="results-title" class="results-title-txt">Resultat final</p>
+      <div class="big-score">
+        <span id="score-num">0</span><span class="score-slash">/</span><span id="total-num">0</span>
+      </div>
+      <p id="score-msg" class="score-msg"></p>
+      <div id="errors-section" class="errors-section"></div>
+      <button id="replay-btn" class="main-btn">Torna a jugar</button>
+      <button id="change-btn" class="sec-btn">Canvia continent</button>
+    </div>
+  </div>
+
+</div>
+<script src="js/quiz.js"></script>
+</body>
+</html>

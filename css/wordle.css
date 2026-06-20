@@ -1,0 +1,182 @@
+/* ── Wordle: loading / missatge ──────────────────────────── */
+.w-loading {
+  text-align: center;
+  color: var(--text-soft);
+  font-size: 15px;
+  margin: 40px 0;
+}
+.w-msg {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 18px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+.w-msg.hidden { display: none; }
+.msg-win  { background: #eafaf1; color: #1a7a42; border: 1px solid #27ae60; }
+.msg-lose { background: #fdedec; color: #c0392b; border: 1px solid #e74c3c; }
+
+.w-hint {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-soft);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin: 0 0 16px;
+}
+
+/* ── Graella ─────────────────────────────────────────────── */
+.wordle-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  margin: 0 auto 20px;
+}
+.wordle-row {
+  display: flex;
+  gap: 5px;
+}
+.wordle-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--border);
+  border-radius: 5px;
+  background: #fff;
+  font-weight: 800;
+  color: var(--text);
+  text-transform: uppercase;
+  user-select: none;
+  transition: border-color .1s;
+}
+.wordle-cell.filled {
+  border-color: #888;
+}
+
+/* Colors de resultat */
+.wordle-cell.correct {
+  background: #27ae60;
+  border-color: #27ae60;
+  color: #fff;
+}
+.wordle-cell.present {
+  background: #e6ac00;
+  border-color: #e6ac00;
+  color: #fff;
+}
+.wordle-cell.absent {
+  background: #787c7e;
+  border-color: #787c7e;
+  color: #fff;
+}
+
+/* Animació reveal per cel·la */
+.wordle-cell.reveal {
+  animation: cell-flip 0.32s ease forwards;
+}
+@keyframes cell-flip {
+  0%   { transform: scaleY(1); }
+  40%  { transform: scaleY(0); }
+  100% { transform: scaleY(1); }
+}
+
+/* Shake de fila quan falta lletra */
+.wordle-row.shake {
+  animation: row-shake 0.45s ease;
+}
+@keyframes row-shake {
+  0%,100% { transform: translateX(0); }
+  20%     { transform: translateX(-6px); }
+  40%     { transform: translateX(6px); }
+  60%     { transform: translateX(-4px); }
+  80%     { transform: translateX(4px); }
+}
+
+/* ── Info país final ─────────────────────────────────────── */
+.country-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin: 0 auto 16px;
+  max-width: 360px;
+}
+.country-info.hidden { display: none; }
+.ci-flag {
+  width: 64px;
+  height: 43px;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 1px 5px rgba(0,0,0,.2);
+  flex-shrink: 0;
+}
+.ci-text { display: flex; flex-direction: column; gap: 2px; }
+.ci-text span { font-size: 12px; color: var(--text-soft); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+.ci-text strong { font-size: 20px; font-weight: 700; }
+
+/* ── Botó jugar de nou ───────────────────────────────────── */
+.w-play-again {
+  display: block;
+  width: 100%;
+  max-width: 340px;
+  margin: 0 auto 24px;
+  padding: 14px 24px;
+  background: var(--orange);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s;
+}
+.w-play-again:hover { background: #cf7209; }
+.w-play-again.hidden { display: none; }
+
+/* ── Teclat ──────────────────────────────────────────────── */
+.wordle-keyboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding-bottom: 12px;
+}
+.kb-row {
+  display: flex;
+  gap: 5px;
+}
+.kb-key {
+  height: 54px;
+  min-width: 36px;
+  padding: 0 6px;
+  border: none;
+  border-radius: 6px;
+  background: #d3d6da;
+  color: #1a1a1b;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+  user-select: none;
+}
+.kb-key:hover { background: #c0c3c7; }
+.kb-wide { min-width: 60px; font-size: 12px; }
+
+.kb-key.correct { background: #27ae60; color: #fff; }
+.kb-key.present { background: #e6ac00; color: #fff; }
+.kb-key.absent  { background: #787c7e; color: #fff; }
+
+/* ── Utilitats ───────────────────────────────────────────── */
+.hidden { display: none !important; }
+
+@media (max-width: 420px) {
+  .kb-key { height: 48px; min-width: 30px; font-size: 13px; }
+  .kb-wide { min-width: 50px; font-size: 11px; }
+}

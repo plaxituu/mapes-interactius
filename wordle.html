@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wordle de Països — Mapes interactius</title>
+<link rel="stylesheet" href="css/estils.css">
+<link rel="stylesheet" href="css/quiz.css">
+<link rel="stylesheet" href="css/wordle.css">
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="quiz-nav">
+    <a href="quiz.html" class="back-link" id="back-link">← Jocs</a>
+    <span class="lang">
+      <button id="lang-ca" class="active">CAT</button>
+      <button id="lang-es">CAST</button>
+    </span>
+  </nav>
+
+  <h1 id="w-title">Wordle de Països</h1>
+  <p class="sub" id="w-sub">Endevina el nom del país en 6 intents.</p>
+
+  <!-- Missatge d'error/èxit -->
+  <div id="w-msg" class="w-msg hidden"></div>
+
+  <!-- Àrea de joc -->
+  <div id="loading-msg" class="w-loading">Carregant…</div>
+
+  <div id="game-area" class="hidden">
+    <p id="w-hint" class="w-hint"></p>
+
+    <!-- Graella -->
+    <div id="wordle-grid" class="wordle-grid"></div>
+
+    <!-- Info país (es mostra al final) -->
+    <div id="country-info" class="country-info hidden">
+      <img id="country-flag" src="" alt="" class="ci-flag">
+      <div class="ci-text">
+        <span id="ci-label"></span>
+        <strong id="ci-name"></strong>
+      </div>
+    </div>
+
+    <!-- Botó jugar de nou -->
+    <button id="play-again-btn" class="w-play-again hidden" onclick="location.reload()"></button>
+
+    <!-- Teclat -->
+    <div id="wordle-keyboard" class="wordle-keyboard"></div>
+  </div>
+
+</div>
+<script src="js/wordle.js"></script>
+</body>
+</html>
