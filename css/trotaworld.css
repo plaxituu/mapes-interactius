@@ -524,28 +524,29 @@ body {
 /* ─── LANGUAGE SWITCHER ───────────────────────────────────── */
 .tw-lang {
   display: inline-flex;
-  border: 1px solid var(--tw-border);
-  border-radius: 8px;
-  overflow: hidden;
+  align-items: center;
+  gap: 2px;
   flex-shrink: 0;
+  margin-left: 4px;
+  padding-left: 12px;
+  border-left: 1px solid var(--tw-border);
 }
 .tw-lang button {
   border: none;
-  background: var(--tw-white);
+  background: transparent;
   color: var(--tw-muted);
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 0 10px;
-  height: 34px;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 5px 8px;
+  height: 32px;
   cursor: pointer;
-  border-left: 1px solid var(--tw-border);
+  border-radius: 7px;
   transition: background .15s, color .15s;
-  letter-spacing: .03em;
+  letter-spacing: .02em;
 }
-.tw-lang button:first-child { border-left: none; }
 .tw-lang button:hover { background: var(--tw-light); color: var(--tw-navy); }
-.tw-lang button.active { background: var(--tw-blue); color: var(--tw-white); }
+.tw-lang button.active { color: var(--tw-blue); font-weight: 700; background: rgba(29,108,255,.08); }
 
 /* ─── RESPONSIVE ──────────────────────────────────────────── */
 @media (max-width: 900px) {
@@ -563,5 +564,6 @@ body {
   .tw-features-grid { grid-template-columns: 1fr 1fr; }
   .tw-hero-title { font-size: 28px; }
   .tw-hero-inner { padding: 40px 20px; }
-  .tw-lang button { padding: 0 7px; font-size: 11px; }
+  .tw-lang { padding-left: 8px; margin-left: 0; }
+  .tw-lang button { padding: 5px 6px; font-size: 12px; }
 }
