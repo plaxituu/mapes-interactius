@@ -1,64 +1,229 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mapes interactius — països, capitals i banderes del món</title>
-<link rel="stylesheet" href="css/estils.css">
-<link rel="stylesheet" href="css/quiz.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trotaworld — Discover countries, capitals &amp; flags</title>
+  <link rel="stylesheet" href="css/trotaworld.css">
 </head>
 <body>
-<div class="wrap">
-  <h1>Mapes interactius del món</h1>
-  <p class="sub">Tria un continent per explorar els seus països, capitals i banderes.</p>
 
-  <a href="quiz.html" class="quiz-promo">
-    <span class="qp-icon">🎮</span>
-    <div>
-      <strong>Jocs interactius</strong>
-      <span>Quiz de geografia · Wordle de països · capitals, banderes i molt més</span>
+<!-- ─── NAVBAR ────────────────────────────────────────────── -->
+<header class="tw-nav">
+  <div class="tw-nav-inner">
+    <a href="index.html" class="tw-logo">
+      <div class="tw-logo-mark">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="19" cy="19" r="18" fill="url(#lg1)"/>
+          <ellipse cx="19" cy="19" rx="8" ry="17" stroke="white" stroke-width="1.2" fill="none" opacity="0.35"/>
+          <line x1="2" y1="19" x2="36" y2="19" stroke="white" stroke-width="1.2" opacity="0.35"/>
+          <line x1="3" y1="13" x2="35" y2="13" stroke="white" stroke-width="1" opacity="0.2"/>
+          <line x1="3" y1="25" x2="35" y2="25" stroke="white" stroke-width="1" opacity="0.2"/>
+          <path d="M19 5 C19 5 25 11 25 17 C25 21.4 22.3 25 19 25 C15.7 25 13 21.4 13 17 C13 11 19 5 19 5Z" fill="white" opacity="0.95"/>
+          <circle cx="19" cy="17" r="3.8" fill="#F59E0B"/>
+          <defs>
+            <linearGradient id="lg1" x1="1" y1="1" x2="37" y2="37" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#14B8A6"/>
+              <stop offset="100%" stop-color="#1D6CFF"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <span class="tw-logo-text">Trota<strong>world</strong></span>
+    </a>
+
+    <nav class="tw-nav-links">
+      <a href="#continents" class="active">Explore</a>
+      <a href="#">Learn</a>
+      <a href="quiz.html">Games</a>
+      <a href="#">Leaderboard</a>
+      <a href="#">About</a>
+    </nav>
+
+    <div class="tw-nav-right">
+      <button class="tw-icon-btn" aria-label="Cerca">
+        <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><circle cx="7.5" cy="7.5" r="5.5" stroke="currentColor" stroke-width="1.6"/><line x1="11.5" y1="11.5" x2="15.5" y2="15.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+      <div class="tw-user-pill">
+        <div class="tw-avatar">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3.5" stroke="#94A3B8" stroke-width="1.5"/><path d="M2 16 C2 12.5 5 10 9 10 C13 10 16 12.5 16 16" stroke="#94A3B8" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+        </div>
+        <div class="tw-user-info">
+          <span class="tw-level">Level 1</span>
+          <div class="tw-xp-track"><div class="tw-xp-fill" style="width:0%"></div></div>
+        </div>
+      </div>
+      <button class="tw-icon-btn" aria-label="Notificacions">
+        <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M8.5 2 C8.5 2 13 3.5 13 8 L13 12 L14.5 13.5 L2.5 13.5 L4 12 L4 8 C4 3.5 8.5 2 8.5 2Z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M7 14 C7 15 7.7 15.5 8.5 15.5 C9.3 15.5 10 15 10 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+      </button>
     </div>
-  </a>
-
-  <div class="continents-grid">
-    <a href="continents/asia.html" class="continent-card">
-      <div class="icon">🌏</div>
-      <div class="name">Àsia</div>
-      <div class="tag">44 països</div>
-    </a>
-    <a href="continents/europa.html" class="continent-card">
-      <div class="icon">🌍</div>
-      <div class="name">Europa</div>
-      <div class="tag">46 països</div>
-    </a>
-    <a href="continents/africa.html" class="continent-card">
-      <div class="icon">🌍</div>
-      <div class="name">Àfrica</div>
-      <div class="tag">54 països</div>
-    </a>
-    <a href="continents/america-nord.html" class="continent-card">
-      <div class="icon">🌎</div>
-      <div class="name">Amèrica del Nord</div>
-      <div class="tag">3 països + 3 territoris</div>
-    </a>
-    <a href="continents/america-central.html" class="continent-card">
-      <div class="icon">🌎</div>
-      <div class="name">Amèrica Central i Carib</div>
-      <div class="tag">20 països</div>
-    </a>
-    <a href="continents/america-sud.html" class="continent-card">
-      <div class="icon">🌎</div>
-      <div class="name">Amèrica del Sud</div>
-      <div class="tag">12 països</div>
-    </a>
-    <a href="continents/oceania.html" class="continent-card">
-      <div class="icon">🌏</div>
-      <div class="name">Oceania</div>
-      <div class="tag">14 països</div>
-    </a>
   </div>
+</header>
 
-  <p class="foot" style="margin-top:40px;">Mapes per a estudi · països, capitals i banderes del món</p>
-</div>
+<!-- ─── HERO ───────────────────────────────────────────────── -->
+<section class="tw-hero">
+  <div class="tw-hero-inner">
+    <div class="tw-hero-content">
+      <div class="tw-hero-badge">LEARN &middot; PLAY &middot; EXPLORE</div>
+      <h1 class="tw-hero-title">
+        Explore the world<br>
+        <span class="tw-hero-accent">with confidence.</span>
+      </h1>
+      <p class="tw-hero-sub">
+        Interactive maps, flags, capitals and quizzes to boost your geography knowledge.
+      </p>
+      <div class="tw-hero-ctas">
+        <a href="#continents" class="tw-btn-primary">
+          Start Exploring
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M8 3L13 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="quiz.html" class="tw-btn-secondary">
+          <svg width="14" height="16" viewBox="0 0 14 16" fill="none"><path d="M2 2L12 8L2 14V2Z" fill="currentColor"/></svg>
+          How it Works
+        </a>
+      </div>
+    </div>
+
+    <div class="tw-hero-globe">
+      <div class="tw-globe-sphere">
+        <div class="tw-globe-dots" id="globeDots"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FEATURE CARDS ──────────────────────────────────────── -->
+<section class="tw-features">
+  <div class="tw-features-grid">
+    <div class="tw-feat-card">
+      <div class="tw-feat-media blue">🗺️</div>
+      <h3>Interactive Maps</h3>
+      <p>Explore countries and discover amazing places.</p>
+      <a href="#continents" class="tw-feat-arrow blue">→</a>
+    </div>
+    <div class="tw-feat-card">
+      <div class="tw-feat-media teal">🏳</div>
+      <h3>Flags</h3>
+      <p>Learn and recognize flags from around the world.</p>
+      <a href="quiz.html" class="tw-feat-arrow teal">→</a>
+    </div>
+    <div class="tw-feat-card">
+      <div class="tw-feat-media green">🏛</div>
+      <h3>Capitals</h3>
+      <p>Memorize capitals and build your knowledge.</p>
+      <a href="quiz.html" class="tw-feat-arrow green">→</a>
+    </div>
+    <div class="tw-feat-card">
+      <div class="tw-feat-media amber">🏆</div>
+      <h3>Quiz &amp; Challenges</h3>
+      <p>Test your knowledge and earn rewards.</p>
+      <a href="quiz.html" class="tw-feat-arrow amber">→</a>
+    </div>
+  </div>
+</section>
+
+<hr class="tw-divider">
+
+<!-- ─── CONTINENTS ─────────────────────────────────────────── -->
+<section id="continents">
+  <div class="tw-section">
+    <div class="tw-section-head">
+      <h2>Explore per continent</h2>
+      <a href="#">Veure tots →</a>
+    </div>
+    <div class="tw-continents-grid">
+      <a href="continents/asia.html" class="tw-cont-card">
+        <div class="tw-cont-icon">🌏</div>
+        <div class="tw-cont-name">Àsia</div>
+        <div class="tw-cont-tag">44 països</div>
+      </a>
+      <a href="continents/europa.html" class="tw-cont-card">
+        <div class="tw-cont-icon">🌍</div>
+        <div class="tw-cont-name">Europa</div>
+        <div class="tw-cont-tag">46 països</div>
+      </a>
+      <a href="continents/africa.html" class="tw-cont-card">
+        <div class="tw-cont-icon">🌍</div>
+        <div class="tw-cont-name">Àfrica</div>
+        <div class="tw-cont-tag">54 països</div>
+      </a>
+      <a href="continents/america-nord.html" class="tw-cont-card">
+        <div class="tw-cont-icon">🌎</div>
+        <div class="tw-cont-name">Amèrica del Nord</div>
+        <div class="tw-cont-tag">3 països</div>
+      </a>
+      <a href="continents/america-central.html" class="tw-cont-card">
+        <div class="tw-cont-icon">🌎</div>
+        <div class="tw-cont-name">Am. Central i Carib</div>
+        <div class="tw-cont-tag">20 països</div>
+      </a>
+      <a href="continents/america-sud.html" class="tw-cont-card">
+        <div class="tw-cont-icon">🌎</div>
+        <div class="tw-cont-name">Amèrica del Sud</div>
+        <div class="tw-cont-tag">12 països</div>
+      </a>
+      <a href="continents/oceania.html" class="tw-cont-card">
+        <div class="tw-cont-icon">🌏</div>
+        <div class="tw-cont-name">Oceania</div>
+        <div class="tw-cont-tag">14 països</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<hr class="tw-divider">
+
+<!-- ─── GAMES ──────────────────────────────────────────────── -->
+<section>
+  <div class="tw-section">
+    <div class="tw-section-head">
+      <h2>Jocs i reptes</h2>
+      <a href="quiz.html">Veure tots →</a>
+    </div>
+    <div class="tw-games-grid">
+      <a href="quiz.html" class="tw-game-card">
+        <div class="tw-game-icon blue">🎯</div>
+        <div class="tw-game-body">
+          <strong>Quiz de Geografia</strong>
+          <span>Capitals, banderes i països · mode fàcil, difícil i global</span>
+        </div>
+        <span class="tw-game-arrow">→</span>
+      </a>
+      <a href="wordle.html" class="tw-game-card">
+        <div class="tw-game-icon green">🟩</div>
+        <div class="tw-game-body">
+          <strong>Wordle de Països</strong>
+          <span>Endevina el país en 6 intents · noms en català</span>
+        </div>
+        <span class="tw-game-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─────────────────────────────────────────────── -->
+<footer class="tw-footer">
+  <strong>Trotaworld</strong> · Discover countries, capitals &amp; flags of the world
+</footer>
+
+<script>
+  /* Scatter dots on globe */
+  const dots = document.getElementById('globeDots');
+  if (dots) {
+    const positions = [
+      [30,40],[55,55],[42,30],[65,35],[20,60],[48,70],[72,48],
+      [35,22],[60,65],[25,50],[70,30],[15,35],[50,45],[80,55],
+      [38,80],[62,22],[28,68],[75,42],[45,15],[18,78]
+    ];
+    positions.forEach(([top, left]) => {
+      const d = document.createElement('div');
+      d.className = 'tw-globe-dot';
+      d.style.top = top + '%';
+      d.style.left = left + '%';
+      dots.appendChild(d);
+    });
+  }
+</script>
+
 </body>
 </html>
